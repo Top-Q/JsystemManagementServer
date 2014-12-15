@@ -19,6 +19,7 @@
         <link href="<c:url value="/resources/tree.css" />" rel="stylesheet">
         <link href="<c:url value="/resources/dashboard.css" />" rel="stylesheet">
         <link href="<c:url value="/resources/jquery-ui.css" />" rel="stylesheet">
+        <link href="<c:url value="/resources/DataTables-1.10.4/media/css/jquery.dataTables.css" />" rel="stylesheet">
         
         <style type="text/css">
         	.agent {
@@ -67,8 +68,65 @@
                 </div>
                 <div class= "col-md-9 hidden-sm hidden-xs panel panel-default">
                     <div class="panel-heading">Registered Agents</div>
-                        <div id="dynamictable" class="panel-body">                                                                                                                                                                                              
-                        </div>                        
+                        <div id="dynamictable" class="panel" style="border-bottom: 2px solid rgba(208, 188, 188, 0.32); padding-bottom: 30px ">                                                                                                                                                                                              
+                        </div>
+                        <div id="tWrapper" style="padding-top: 40px">
+					<table id="table_id" class="display">
+				    <thead>
+				        <tr>
+				        	<th>Execution No.</th>
+				            <th>Scenario</th>
+				            <th>Agent</th>
+				            <th>Time Stamp</th>				         
+				            <th>Status</th>
+				        </tr>
+				    </thead>
+				    <tbody>
+				        <tr>
+				            <td>1</td>
+				            <td>default</td>
+				            <td>master</td>
+				            <td>15.12.2014 11:14</td>
+				            <td>pass</td>
+				        </tr>
+				        <tr>
+				            <td>2</td>
+				            <td>regression</td>
+				            <td>auto-reg</td>
+				            <td>14.12.2014 14:34</td>
+				            <td>fail</td>
+				        </tr>
+				        <tr>
+				            <td>3</td>
+				            <td>sanity</td>
+				            <td>auto-sanity-1</td>
+				            <td>14.12.2014 17:45</td>
+				            <td>pass</td>
+				        </tr>
+				        <tr>
+				            <td>4</td>
+				            <td>sanity</td>
+				            <td>auto-sanity-3</td>
+				            <td>14.12.2014 16:25</td>
+				            <td>pass</td>
+				        </tr>
+				        <tr>
+				            <td>5</td>
+				            <td>web-reg</td>
+				            <td>auto-reg-web</td>
+				            <td>13.12.2014 20:45</td>
+				            <td>fail</td>
+				        </tr>
+				        <tr>
+				            <td>6</td>
+				            <td>sanity</td>
+				            <td>auto-sanity-4</td>
+				            <td>12.12.2014 22:32</td>
+				            <td>pass</td>
+				        </tr>
+				    </tbody>
+					</table>                	
+                </div>                        
                     </div>
                 </div>
             </div>
@@ -82,7 +140,8 @@
         <script src="<c:url value="/resources/docs.min.js" />"></script>
         <script src="<c:url value="/resources/treeController.js" />"></script>
         <script src="<c:url value="/resources/execution.js" />"></script>
-        <script src="<c:url value="/resources/jquery-ui.js" />"></script>          
+        <script src="<c:url value="/resources/jquery-ui.js" />"></script>
+        <script src="<c:url value="/resources/DataTables-1.10.4/media/js/jquery.dataTables.js" />"></script>          
         <script type="text/javascript" >
                             function populateTreeNew() {
                                 //$.jstree.defaults.search.show_only_matches = true;
@@ -184,15 +243,15 @@
                             }
                             
                             function executeParameterizedJob() {
-                            	/* var reqParams = {};
+                            	var reqParams = {};
                             	reqParams.agent = document.getElementById('machineInput').value;
                             	reqParams.scenario = document.getElementById('scenarioInput').value;
                             	console.log(reqParams);
                             	$.get("http://localhost:8080/testsexecutionserver/jenkins/executeParameterizedJob", reqParams, function(data) {
                             		console.log(data);
-                            	}); */
+                            	});
                             	
-                            	var p = {};
+                            	/* var p = {};
                             	p.node = document.getElementById('machineInput').value;
                             	p.scenario = document.getElementById('scenarioInput').value;
                             	$.ajax({
@@ -202,12 +261,13 @@
                             		success: function(data) {
                             			console.log(data);
                             		}
-                            	});
+                            	}); */
                             }
 
                             $(document).ready(function() {
                                 populateTreeNew();
                                 populateAgents();
+                                $('#table_id').DataTable();
                             });                                                      
         </script>
 

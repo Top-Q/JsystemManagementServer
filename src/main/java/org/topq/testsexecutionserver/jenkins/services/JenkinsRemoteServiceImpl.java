@@ -83,10 +83,12 @@ public class JenkinsRemoteServiceImpl implements JenkinsRemoteService {
 			requestPath = "/computer/api/json";
 			break;
 		case EXECUTE_DEFAULT_JOB:
-			requestPath = "/job/SimpleTestsExecution/build";
+			/*requestPath = "/job/SimpleTestsExecution/build";*/
+			requestPath = "/job/ManagmentJob/build";
 			break;
 		case EXECUTE_PARAMETERIZED_JOB:
-			requestPath = "/job/SimpleTestsExecution/buildWithParameters";
+			/*requestPath = "/job/SimpleTestsExecution/buildWithParameters";*/
+			requestPath = "/job/ManagmentJob/buildWithParameters";
 		default:
 			break;
 		}
