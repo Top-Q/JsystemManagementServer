@@ -7,4 +7,5 @@ public interface JenkinsRemoteService {
 	public String getAvailableAgents();
 	public String executeDefaultJob();
 	public String executeParameterizedJob(Map<String, String> params);
+	
 }

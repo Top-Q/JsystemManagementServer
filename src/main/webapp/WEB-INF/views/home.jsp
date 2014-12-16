@@ -186,8 +186,9 @@
                             }                                                        
                             
                             function populateAgents() { 
+                            	//http://localhost:8080/testsexecutionserver/jenkins/getAgents
                             	var obj;
-                            	  $.ajax({url:"http://localhost:8080/testsexecutionserver/jenkins/getAgents",success:function(result){     
+                            	  $.ajax({url:"/testsexecutionserver/jenkins/getAgents",success:function(result){     
                             		  obj = jQuery.parseJSON(result);                            		                              	      
                             	      /* $('#dynamictable').append('<table></table>');
                               	      var table = $('#dynamictable').children();
@@ -235,7 +236,8 @@
                             }
                             
                             function executeJob() {
-                            	$.ajax({url:"http://localhost:8080/testsexecutionserver/jenkins/executeDefaultJob",dataType:"json",success:function(data){
+                            	//http://localhost:8080/testsexecutionserver/jenkins/executeDefaultJob
+                            	$.ajax({url:"/testsexecutionserver/jenkins/executeDefaultJob",dataType:"json",success:function(data){
                               	  console.log(data);
                           	    },fail:function(result) {
                           	    	alert('Failed to get scenario model!!')
@@ -247,7 +249,8 @@
                             	reqParams.agent = document.getElementById('machineInput').value;
                             	reqParams.scenario = document.getElementById('scenarioInput').value;
                             	console.log(reqParams);
-                            	$.get("http://localhost:8080/testsexecutionserver/jenkins/executeParameterizedJob", reqParams, function(data) {
+                            	//http://localhost:8080/testsexecutionserver/jenkins/executeParameterizedJob
+                            	$.get("/testsexecutionserver/jenkins/executeParameterizedJob", reqParams, function(data) {
                             		console.log(data);
                             	});
                             	
@@ -268,7 +271,19 @@
                                 populateTreeNew();
                                 populateAgents();
                                 $('#table_id').DataTable();
-                            });                                                      
+                                /* $('#table_id').DataTable({
+                                	"processing": true,
+                                    "serverSide": true,
+                                    "ajax": "scripts/objects.php",
+                                    "columns": [
+                                        { "data": "executionNumber" },
+                                        { "data": "scenario" },
+                                        { "data": "agent" },
+                                        { "data": "timeStamp" },
+                                        { "data": "status" },
+                                    ]
+                                }); */
+                            });            
         </script>
 
     </body>

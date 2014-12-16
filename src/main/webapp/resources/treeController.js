@@ -86,7 +86,8 @@ function decideIcon(node) {
 }
 
 function treeController(element) {
-	$.ajax({url:"http://localhost:8080/testsexecutionserver/scenarioComposer/getScenarioModel",dataType:"json",success:function(data){
+	//http://localhost:8080/testsexecutionserver/scenarioComposer/getScenarioModel
+	$.ajax({url:"/testsexecutionserver/scenarioComposer/getScenarioModel",dataType:"json",success:function(data){
     	  handleTree(data, element);
 	    },fail:function(result) {
 	    	alert('Failed to get scenario model!!')
