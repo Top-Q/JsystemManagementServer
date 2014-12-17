@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.topq.testsexecutionserver.domain.ExecutionData;
 import org.topq.testsexecutionserver.jenkins.services.JenkinsRemoteService;
 
 @Controller
@@ -36,6 +37,12 @@ public class JenkinsController {
 		params.put("node", agent);
 		params.put("scenario", scenario);
 		return jenkinsRemoteService.executeParameterizedJob(params);
+	}
+	
+	@RequestMapping(value = "getExecutionHistory", method = RequestMethod.GET)
+	public @ResponseBody ExecutionData getAllStudents() {
+		ExecutionData data = new ExecutionData();
+		return data;
 	}
 
 }

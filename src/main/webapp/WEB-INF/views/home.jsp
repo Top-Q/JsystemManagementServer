@@ -81,50 +81,6 @@
 				            <th>Status</th>
 				        </tr>
 				    </thead>
-				    <tbody>
-				        <tr>
-				            <td>1</td>
-				            <td>default</td>
-				            <td>master</td>
-				            <td>15.12.2014 11:14</td>
-				            <td>pass</td>
-				        </tr>
-				        <tr>
-				            <td>2</td>
-				            <td>regression</td>
-				            <td>auto-reg</td>
-				            <td>14.12.2014 14:34</td>
-				            <td>fail</td>
-				        </tr>
-				        <tr>
-				            <td>3</td>
-				            <td>sanity</td>
-				            <td>auto-sanity-1</td>
-				            <td>14.12.2014 17:45</td>
-				            <td>pass</td>
-				        </tr>
-				        <tr>
-				            <td>4</td>
-				            <td>sanity</td>
-				            <td>auto-sanity-3</td>
-				            <td>14.12.2014 16:25</td>
-				            <td>pass</td>
-				        </tr>
-				        <tr>
-				            <td>5</td>
-				            <td>web-reg</td>
-				            <td>auto-reg-web</td>
-				            <td>13.12.2014 20:45</td>
-				            <td>fail</td>
-				        </tr>
-				        <tr>
-				            <td>6</td>
-				            <td>sanity</td>
-				            <td>auto-sanity-4</td>
-				            <td>12.12.2014 22:32</td>
-				            <td>pass</td>
-				        </tr>
-				    </tbody>
 					</table>                	
                 </div>                        
                     </div>
@@ -270,11 +226,11 @@
                             $(document).ready(function() {
                                 populateTreeNew();
                                 populateAgents();
-                                $('#table_id').DataTable();
-                                /* $('#table_id').DataTable({
+                                /* $('#table_id').DataTable(); */
+                                $('#table_id').DataTable({
                                 	"processing": true,
-                                    "serverSide": true,
-                                    "ajax": "scripts/objects.php",
+                                    "serverSide": false,
+                                    "ajax": "/testsexecutionserver/jenkins/getExecutionHistory",
                                     "columns": [
                                         { "data": "executionNumber" },
                                         { "data": "scenario" },
@@ -282,7 +238,7 @@
                                         { "data": "timeStamp" },
                                         { "data": "status" },
                                     ]
-                                }); */
+                                });
                             });            
         </script>
 
