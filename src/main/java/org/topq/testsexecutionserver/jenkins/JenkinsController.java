@@ -42,9 +42,8 @@ public class JenkinsController {
 	}
 	
 	@RequestMapping(value = "getExecutionHistory", method = RequestMethod.GET)
-	public @ResponseBody ExecutionData getAllStudents() {
-		ExecutionData data = new ExecutionData();
-		return data;
+	public @ResponseBody ExecutionData getExecutionHistory() {		
+		return jenkinsRemoteService.getExecutionHistory();
 	}
 
 }
