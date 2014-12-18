@@ -78,10 +78,10 @@ function decideName(node) {
 
 function decideIcon(node) {
 	if (node.name) {
-		return "./resources/imgs/tsuiteok.gif";
+		return "./resources/imgs/tsuiterun.gif";
 	}
 	else {
-		return "./resources/imgs/testok.gif";
+		return "./resources/imgs/testrun.gif";
 	}
 }
 
