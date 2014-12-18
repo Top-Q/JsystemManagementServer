@@ -204,8 +204,8 @@
                             	var reqParams = {};
                             	reqParams.agent = document.getElementById('machineInput').value;
                             	reqParams.scenario = document.getElementById('scenarioInput').value;
+                            	reqParams.nodeMark = document.getElementById('machineInput').value;
                             	console.log(reqParams);
-                            	//http://localhost:8080/testsexecutionserver/jenkins/executeParameterizedJob
                             	$.get("/testsexecutionserver/jenkins/executeParameterizedJob", reqParams, function(data) {
                             		console.log(data);
                             	});
@@ -214,7 +214,7 @@
                             	p.node = document.getElementById('machineInput').value;
                             	p.scenario = document.getElementById('scenarioInput').value;
                             	$.ajax({
-                            		url: "http://10.104.7.224:8080/job/SimpleTestsExecution/buildWithParameters",
+                            		url: "http://10.0.0.6:8080/job/ManagmentJob/buildWithParameters",
                             		type: "POST", 
                             		data: p,
                             		success: function(data) {
