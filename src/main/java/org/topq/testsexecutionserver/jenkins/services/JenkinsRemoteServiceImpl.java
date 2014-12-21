@@ -34,6 +34,7 @@ public class JenkinsRemoteServiceImpl implements JenkinsRemoteService {
 
 	private String masterIp;
 	private String masterPort;
+	private String maxExecutionHistoryEntries;
 
 	@Override
 	public String getAvailableAgents() {
@@ -107,7 +108,15 @@ public class JenkinsRemoteServiceImpl implements JenkinsRemoteService {
 
 	private void fillExecutionData(ExecutionData executionData,
 			BuildsContainer buildsContainer) {
-		for (Build build : buildsContainer.getBuilds()) {
+		/*for (Build build : buildsContainer.getBuilds()) {
+			if (build != null) {
+				ExecutionRow executionRow = fillExecutionRow(build);
+				executionData.getData().add(executionRow);
+			}
+		}*/
+		int maxBuilds = Integer.parseInt(maxExecutionHistoryEntries);
+		for (int i = 0; i < maxBuilds; i++) {
+			Build build = buildsContainer.getBuilds().get(i);
 			if (build != null) {
 				ExecutionRow executionRow = fillExecutionRow(build);
 				executionData.getData().add(executionRow);
@@ -175,6 +184,7 @@ public class JenkinsRemoteServiceImpl implements JenkinsRemoteService {
 		properties.load(in);
 		masterIp = properties.getProperty("jenkinsMasterIp");
 		masterPort = properties.getProperty("jenkinsMasterPort");
+		maxExecutionHistoryEntries = properties.getProperty("maxExecutionHistoryEntries");
 	}
 
 	private String updateRequestUrlAccordingToApi(
