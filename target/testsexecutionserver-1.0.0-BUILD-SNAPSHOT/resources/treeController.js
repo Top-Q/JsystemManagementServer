@@ -78,31 +78,31 @@ function decideName(node) {
 
 function decideIcon(node) {
 	if (node.name) {
-		return "./resources/imgs/tsuiteok.gif";
+		return "./resources/imgs/tsuiterun.gif";
 	}
 	else {
-		return "./resources/imgs/testok.gif";
+		return "./resources/imgs/testrun.gif";
 	}
 }
 
 function treeController(element) {
-    /*var json = execution;*/
-    /*var tree = {'text': 'JSystem', 'icon': './resources/imgs/jsystem_ico.gif', 'children': []};
-    $(json.machines).each(function(machineIndex) {
-        tree.children.push({'text': this.name, icon: './resources/imgs/machine.png', 'children': [], 'state': {'opened': true, 'selected': true}});
-        $(this.children).each(function(scenarioIndex) {
-            var children = new Array();
-            tree.children[machineIndex].children[scenarioIndex] = {'text': this.name, icon: suiteIcon(this.status), 'children': children};
-            populateChildren(this.children, children);
-        });
-    });*/
-    var json = moshe;
-    var children = new Array();
+	//http://localhost:8080/testsexecutionserver/scenarioComposer/getScenarioModel
+	$.ajax({url:"/testsexecutionserver/scenarioComposer/getScenarioModel",dataType:"json",success:function(data){
+    	  handleTree(data, element);
+	    },fail:function(result) {
+	    	alert('Failed to get scenario model!!')
+	    }});
+}
+
+function handleTree(json, element) {
+	/*console.log(json);
+	console.log(element);*/
+	var children = new Array();
     var tree = {'text': 'RootScenario', 'icon': './resources/imgs/tsuiteok.gif', 'children': children};
-    /*var tree = {'text': 'RootScenario', 'icon': './resources/imgs/tsuiteok.gif', 'children': []};*/   
+    var tree = {'text': 'RootScenario', 'icon': './resources/imgs/tsuiteok.gif', 'children': []};   
     $(json.childNodes).each(function(childIndex) {    	
-    	/*var children = new Array();*/
-    	/*tree.children[childIndex] = {'text': decideName(this), 'icon': decideIcon(this), 'children': children};*/
+    	var children = new Array();
+    	tree.children[childIndex] = {'text': decideName(this), 'icon': decideIcon(this), 'children': children};
     	populateNodes(this, children);
     });
     core = {'core': {'data': [tree]}};
@@ -117,6 +117,7 @@ function treeController(element) {
                 }
     };
     $(element).jstree(core);
+    //$(document.getElementById('tree')).jstree(core);
 }
 
 
