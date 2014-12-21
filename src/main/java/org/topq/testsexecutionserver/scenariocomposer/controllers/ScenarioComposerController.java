@@ -5,8 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.topq.scenarioparser.ScenarioNode;
 import org.topq.testsexecutionserver.scenariocomposer.services.IScenarioScanner;
+import org.topq.testsexecutionserver.scenarioparser.domain.ScenarioNode;
 
 @Controller
 @RequestMapping("/scenarioComposer")

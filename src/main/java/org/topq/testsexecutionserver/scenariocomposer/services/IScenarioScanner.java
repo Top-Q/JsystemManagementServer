@@ -1,6 +1,6 @@
 package org.topq.testsexecutionserver.scenariocomposer.services;
 
-import org.topq.scenarioparser.ScenarioNode;
+import org.topq.testsexecutionserver.scenarioparser.domain.ScenarioNode;
 
 public interface IScenarioScanner {
 	

@@ -6,8 +6,8 @@ import java.util.Properties;
 import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Component;
-import org.topq.scenarioparser.ScenarioNode;
-import org.topq.scenarioparser.ScenarioParser;
+import org.topq.testsexecutionserver.scenarioparser.domain.ScenarioNode;
+import org.topq.testsexecutionserver.scenarioparser.domain.ScenarioParser;
 
 @Component
 public class FsScenarioScanner implements IScenarioScanner {
