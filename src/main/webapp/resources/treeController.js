@@ -95,8 +95,6 @@ function treeController(element) {
 }
 
 function handleTree(json, element) {
-	/*console.log(json);
-	console.log(element);*/
 	console.log(json);
 	var children = new Array();
     var tree = {'text': json.name, 'icon': './resources/imgs/tsuiteok.gif', 'children': children};
