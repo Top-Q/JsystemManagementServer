@@ -74,8 +74,6 @@ public class JenkinsRemoteServiceImpl implements JenkinsRemoteService {
 	
 	@Override
 	public ExecutionData getExecutionHistory() {
-		/*ExecutionData data = new ExecutionData();
-		return data;*/
 		
 		String jsonRes = null;
 		String url = updateRequestUrlAccordingToApi(RemoteApiRequest.GET_JOB_BUILDS_TREE);
@@ -108,12 +106,6 @@ public class JenkinsRemoteServiceImpl implements JenkinsRemoteService {
 
 	private void fillExecutionData(ExecutionData executionData,
 			BuildsContainer buildsContainer) {
-		/*for (Build build : buildsContainer.getBuilds()) {
-			if (build != null) {
-				ExecutionRow executionRow = fillExecutionRow(build);
-				executionData.getData().add(executionRow);
-			}
-		}*/
 		int maxBuilds = Integer.parseInt(maxExecutionHistoryEntries);
 		for (int i = 0; i < maxBuilds; i++) {
 			Build build = buildsContainer.getBuilds().get(i);
@@ -126,8 +118,6 @@ public class JenkinsRemoteServiceImpl implements JenkinsRemoteService {
 
 	private ExecutionRow fillExecutionRow(Build build) {
 		ExecutionRow executionRow = new ExecutionRow();
-		/*executionRow.setAgent("master");
-		executionRow.setScenario("default");*/
 		executionRow.setStatus(build.getResult());
 		executionRow.setTimeStamp(build.getId());
 		executionRow.setExecutionNumber(build.getNumber());
