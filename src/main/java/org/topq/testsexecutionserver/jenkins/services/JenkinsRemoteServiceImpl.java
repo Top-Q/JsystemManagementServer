@@ -118,7 +118,12 @@ public class JenkinsRemoteServiceImpl implements JenkinsRemoteService {
 
 	private ExecutionRow fillExecutionRow(Build build) {
 		ExecutionRow executionRow = new ExecutionRow();
-		executionRow.setStatus(build.getResult());
+		if (build.getResult() == null) {
+			executionRow.setStatus("RUNNING");
+		}
+		else {
+			executionRow.setStatus(build.getResult());	
+		}
 		executionRow.setTimeStamp(build.getId());
 		executionRow.setExecutionNumber(build.getNumber());
 		
