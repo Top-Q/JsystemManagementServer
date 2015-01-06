@@ -1,7 +1,9 @@
 package org.topq.testsexecutionserver.jenkins.services;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +22,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.topq.testsexecutionserver.domain.Build;
 import org.topq.testsexecutionserver.domain.BuildExtraInformation;
@@ -27,14 +30,14 @@ import org.topq.testsexecutionserver.domain.BuildsContainer;
 import org.topq.testsexecutionserver.domain.ExecutionData;
 import org.topq.testsexecutionserver.domain.ExecutionRow;
 import org.topq.testsexecutionserver.domain.Parameter;
+import org.topq.testsexecutionserver.managment.SystemConfig;
 import org.topq.testsexecutionserver.utils.UtilStreamToString;
 
 @Component
 public class JenkinsRemoteServiceImpl implements JenkinsRemoteService {
-
-	private String masterIp;
-	private String masterPort;
-	private String maxExecutionHistoryEntries;
+	
+	@Autowired
+	private SystemConfig systemConfig;
 
 	@Override
 	public String getAvailableAgents() {
@@ -106,13 +109,16 @@ public class JenkinsRemoteServiceImpl implements JenkinsRemoteService {
 
 	private void fillExecutionData(ExecutionData executionData,
 			BuildsContainer buildsContainer) {
-		int maxBuilds = Integer.parseInt(maxExecutionHistoryEntries);
+		int maxBuilds = Integer.parseInt(systemConfig.getMaxExecutionHistoryEntries());
+		if (maxBuilds > buildsContainer.getBuilds().size()) {
+			maxBuilds = buildsContainer.getBuilds().size();
+		}
 		for (int i = 0; i < maxBuilds; i++) {
 			Build build = buildsContainer.getBuilds().get(i);
 			if (build != null) {
 				ExecutionRow executionRow = fillExecutionRow(build);
 				executionData.getData().add(executionRow);
-			}
+			}		
 		}
 	}
 
@@ -167,24 +173,11 @@ public class JenkinsRemoteServiceImpl implements JenkinsRemoteService {
 
 	private String updateUrlWithBuildNumber(String url, Integer number) {
 		return url.replace("xxx", number.toString());
-	}
-
-	@PostConstruct
-	public void init() throws Exception {
-		Properties properties = new Properties();
-		InputStream in = this
-				.getClass()
-				.getResourceAsStream(
-						"/org/topq/testsexecutionserver/scenarioparser/resources/scenarioParseInput.properties");
-		properties.load(in);
-		masterIp = properties.getProperty("jenkinsMasterIp");
-		masterPort = properties.getProperty("jenkinsMasterPort");
-		maxExecutionHistoryEntries = properties.getProperty("maxExecutionHistoryEntries");
-	}
+	}	
 
 	private String updateRequestUrlAccordingToApi(
 			RemoteApiRequest remoteApiRequest) {
-		String url = "http://" + masterIp + ":" + masterPort;
+		String url = "http://" + systemConfig.getJenkinsIp() + ":" + systemConfig.getJenkinsPort();
 		String requestPath = null;
 
 		switch (remoteApiRequest) {

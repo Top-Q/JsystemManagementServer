@@ -192,7 +192,6 @@
                             }
                             
                             function executeJob() {
-                            	//http://localhost:8080/testsexecutionserver/jenkins/executeDefaultJob
                             	$.ajax({url:"/testsexecutionserver/jenkins/executeDefaultJob",dataType:"json",success:function(data){
                               	  console.log(data);
                           	    },fail:function(result) {

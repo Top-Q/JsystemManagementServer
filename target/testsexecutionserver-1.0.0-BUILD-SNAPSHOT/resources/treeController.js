@@ -95,18 +95,18 @@ function treeController(element) {
 }
 
 function handleTree(json, element) {
-	/*console.log(json);
-	console.log(element);*/
+	console.log(json);
 	var children = new Array();
-    var tree = {'text': 'RootScenario', 'icon': './resources/imgs/tsuiteok.gif', 'children': children};
-    var tree = {'text': 'RootScenario', 'icon': './resources/imgs/tsuiteok.gif', 'children': []};   
+    var tree = {'text': json.name, 'icon': './resources/imgs/tsuiteok.gif', 'children': children};
+    var tree = {'text': json.name, 'icon': './resources/imgs/tsuiteok.gif', 'children': []};   
     $(json.childNodes).each(function(childIndex) {    	
     	var children = new Array();
     	tree.children[childIndex] = {'text': decideName(this), 'icon': decideIcon(this), 'children': children};
     	populateNodes(this, children);
     });
     core = {'core': {'data': [tree]}};
-    core.plugins = ['search', 'state', 'types'];
+    //core.plugins = ['search', 'state', 'types'];
+    core.plugins = ['search', 'types'];
     core.types = {'valid_children': 
                 ['success'],
         'types':
