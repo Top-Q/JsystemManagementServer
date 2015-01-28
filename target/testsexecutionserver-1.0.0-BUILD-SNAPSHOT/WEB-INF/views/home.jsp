@@ -8,7 +8,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>Execution Tree</title>
+        <title>Execution Manager</title>
 
         <!-- Bootstrap core CSS -->
         <link href="<c:url value="/resources/bootstrap.min.css" />" rel="stylesheet">

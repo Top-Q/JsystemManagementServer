@@ -142,15 +142,9 @@
                             }                                                        
                             
                             function populateAgents() { 
-                            	//http://localhost:8080/testsexecutionserver/jenkins/getAgents
                             	var obj;
                             	  $.ajax({url:"/testsexecutionserver/jenkins/getAgents",success:function(result){     
                             		  obj = jQuery.parseJSON(result);                            		                              	      
-                            	      /* $('#dynamictable').append('<table></table>');
-                              	      var table = $('#dynamictable').children();
-                              	      for (var i = 0; i < obj.computer.length; i++) {
-                              	    	  table.append("<tr><td>" + obj.computer[i].displayName + "</td>"+ "<td><a><img src=\"./resources/imgs/agent.png\"></a>" +"</td></tr>");
-                              	      } */
                               	      
                             		  $('#dynamictable').append('<table></table>');
                             	      var table = $('#dynamictable').children();
@@ -170,8 +164,6 @@
                             	    	  else {
                             	    		  tdElements += "<tr><td><a onClick=clickOnAgent(this)>" + obj.computer[i].displayName + "<img src=\"./resources/imgs/agent.png\"></a></td></tr>";  
                             	    	  }
-                            	    	  /* tdElements += "<tr><td>" + obj.computer[i].displayName + "<a onClick=clickOnAgent()><img src=\"./resources/imgs/agent.png\"></a></td></tr>"; */
-                            	    	  
                             	    	  
                             	    	  if(i % 4 == 3){
                             	    		trElem.innerHTML = tdElements;
@@ -208,25 +200,12 @@
                             	$.get("/testsexecutionserver/jenkins/executeParameterizedJob", reqParams, function(data) {
                             		console.log(data);
                             	});
-                            	
-                            	/* var p = {};
-                            	p.node = document.getElementById('machineInput').value;
-                            	p.scenario = document.getElementById('scenarioInput').value;
-                            	$.ajax({
-                            		url: "http://10.0.0.6:8080/job/ManagmentJob/buildWithParameters",
-                            		type: "POST", 
-                            		data: p,
-                            		success: function(data) {
-                            			console.log(data);
-                            		}
-                            	}); */
                             }
-
+                            
                             $(document).ready(function() {
                                 populateTreeNew();
                                 populateAgents();
-                                /* $('#table_id').DataTable(); */
-                                $('#table_id').DataTable({
+                                var oTable = $('#table_id').DataTable({
                                 	"processing": true,
                                     "serverSide": false,
                                     "ajax": "/testsexecutionserver/jenkins/getExecutionHistory",
