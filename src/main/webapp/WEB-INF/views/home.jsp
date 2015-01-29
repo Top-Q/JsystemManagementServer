@@ -202,6 +202,15 @@
                             	});
                             }
                             
+                            function cancelExecution(jobId) {
+                            	var reqParams = {};
+                            	reqParams.jobId = jobId;
+                            	console.log("cancelling " + jobId)
+                            	$.get("/testsexecutionserver/jenkins/cancelJob", reqParams, function(data) {
+                            		console.log(data);
+                            	});
+                            }
+                            
                             $(document).ready(function() {
                                 populateTreeNew();
                                 populateAgents();
@@ -215,7 +224,16 @@
                                         { "data": "agent" },
                                         { "data": "timeStamp" },
                                         { "data": "status" },
-                                    ]
+                                    ],
+                                    "initComplete": function () {
+                                        var api = this.api();
+                                        api.$('tr').click( function () {
+                                        	if (this.getElementsByTagName('td')[4].innerHTML == 'RUNNING') {
+                                        		alert('About to cancel run #' + this.getElementsByTagName('td')[0].innerHTML)
+                                        		cancelExecution(this.getElementsByTagName('td')[0].innerHTML);
+                                        	}
+                                        });
+                                    }
                                 });
                             });            
         </script>

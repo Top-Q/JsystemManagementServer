@@ -1,15 +1,9 @@
 package org.topq.testsexecutionserver.jenkins.services;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
-
-import javax.annotation.PostConstruct;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -35,7 +29,7 @@ import org.topq.testsexecutionserver.utils.UtilStreamToString;
 
 @Component
 public class JenkinsRemoteServiceImpl implements JenkinsRemoteService {
-	
+
 	@Autowired
 	private SystemConfig systemConfig;
 
@@ -50,7 +44,7 @@ public class JenkinsRemoteServiceImpl implements JenkinsRemoteService {
 		}
 		return jsonRes;
 	}
-	
+
 	@Override
 	public String executeDefaultJob() {
 		String jsonRes = null;
@@ -62,7 +56,7 @@ public class JenkinsRemoteServiceImpl implements JenkinsRemoteService {
 		}
 		return jsonRes;
 	}
-	
+
 	@Override
 	public String executeParameterizedJob(Map<String, String> params) {
 		String jsonRes = null;
@@ -74,10 +68,23 @@ public class JenkinsRemoteServiceImpl implements JenkinsRemoteService {
 		}
 		return jsonRes;
 	}
-	
+
+	@Override
+	public String cancelExecution(String buildNumber) {
+		String jsonRes = null;
+		String url = updateRequestUrlAccordingToApi(RemoteApiRequest.CANCEL_EXECUTION);
+		url = updateUrlWithBuildNumber(url, buildNumber);
+		try {
+			jsonRes = sendPostRequestToJenkinsRestApi(url, null);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return jsonRes;
+	}
+
 	@Override
 	public ExecutionData getExecutionHistory() {
-		
+
 		String jsonRes = null;
 		String url = updateRequestUrlAccordingToApi(RemoteApiRequest.GET_JOB_BUILDS_TREE);
 		try {
@@ -85,7 +92,7 @@ public class JenkinsRemoteServiceImpl implements JenkinsRemoteService {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		
+
 		BuildsContainer buildsContainer = null;
 		ObjectMapper mapper = new ObjectMapper();
 		try {
@@ -100,16 +107,17 @@ public class JenkinsRemoteServiceImpl implements JenkinsRemoteService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		ExecutionData executionData = new ExecutionData();
 		fillExecutionData(executionData, buildsContainer);
-		
+
 		return executionData;
 	}
 
 	private void fillExecutionData(ExecutionData executionData,
 			BuildsContainer buildsContainer) {
-		int maxBuilds = Integer.parseInt(systemConfig.getMaxExecutionHistoryEntries());
+		int maxBuilds = Integer.parseInt(systemConfig
+				.getMaxExecutionHistoryEntries());
 		if (maxBuilds > buildsContainer.getBuilds().size()) {
 			maxBuilds = buildsContainer.getBuilds().size();
 		}
@@ -118,7 +126,7 @@ public class JenkinsRemoteServiceImpl implements JenkinsRemoteService {
 			if (build != null) {
 				ExecutionRow executionRow = fillExecutionRow(build);
 				executionData.getData().add(executionRow);
-			}		
+			}
 		}
 	}
 
@@ -126,13 +134,12 @@ public class JenkinsRemoteServiceImpl implements JenkinsRemoteService {
 		ExecutionRow executionRow = new ExecutionRow();
 		if (build.getResult() == null) {
 			executionRow.setStatus("RUNNING");
-		}
-		else {
-			executionRow.setStatus(build.getResult());	
+		} else {
+			executionRow.setStatus(build.getResult());
 		}
 		executionRow.setTimeStamp(build.getId());
 		executionRow.setExecutionNumber(build.getNumber());
-		
+
 		String jsonRes = null;
 		String url = updateRequestUrlAccordingToApi(RemoteApiRequest.GET_BUILD_EXTRA_INFO);
 		url = updateUrlWithBuildNumber(url, build.getNumber());
@@ -141,11 +148,12 @@ public class JenkinsRemoteServiceImpl implements JenkinsRemoteService {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		
+
 		BuildExtraInformation buildExtraInfo = null;
 		ObjectMapper mapper = new ObjectMapper();
 		try {
-			buildExtraInfo = mapper.readValue(jsonRes, BuildExtraInformation.class);
+			buildExtraInfo = mapper.readValue(jsonRes,
+					BuildExtraInformation.class);
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -156,28 +164,35 @@ public class JenkinsRemoteServiceImpl implements JenkinsRemoteService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		try {
-			Parameter scenarioParam = buildExtraInfo.getActions().get(0).getParameters().get(1);
-			Parameter nodeMarkParam = buildExtraInfo.getActions().get(0).getParameters().get(2);
-			
+			Parameter scenarioParam = buildExtraInfo.getActions().get(0)
+					.getParameters().get(1);
+			Parameter nodeMarkParam = buildExtraInfo.getActions().get(0)
+					.getParameters().get(2);
+
 			executionRow.setAgent(nodeMarkParam.getValue());
 			executionRow.setScenario(scenarioParam.getValue());
 		} catch (Exception e) {
 			executionRow.setAgent("N/A");
 			executionRow.setScenario("N/A");
 		}
-	
+
 		return executionRow;
 	}
 
 	private String updateUrlWithBuildNumber(String url, Integer number) {
 		return url.replace("xxx", number.toString());
-	}	
+	}
+	
+	private String updateUrlWithBuildNumber(String url, String number) {
+		return url.replace("xxx", number);
+	}
 
 	private String updateRequestUrlAccordingToApi(
 			RemoteApiRequest remoteApiRequest) {
-		String url = "http://" + systemConfig.getJenkinsIp() + ":" + systemConfig.getJenkinsPort();
+		String url = "http://" + systemConfig.getJenkinsIp() + ":"
+				+ systemConfig.getJenkinsPort();
 		String requestPath = null;
 
 		switch (remoteApiRequest) {
@@ -185,11 +200,11 @@ public class JenkinsRemoteServiceImpl implements JenkinsRemoteService {
 			requestPath = "/computer/api/json";
 			break;
 		case EXECUTE_DEFAULT_JOB:
-			/*requestPath = "/job/SimpleTestsExecution/build";*/
+			/* requestPath = "/job/SimpleTestsExecution/build"; */
 			requestPath = "/job/ManagmentJob/build";
 			break;
 		case EXECUTE_PARAMETERIZED_JOB:
-			/*requestPath = "/job/SimpleTestsExecution/buildWithParameters";*/
+			/* requestPath = "/job/SimpleTestsExecution/buildWithParameters"; */
 			requestPath = "/job/ManagmentJob/buildWithParameters";
 			break;
 		case GET_JOB_BUILDS_TREE:
@@ -198,14 +213,18 @@ public class JenkinsRemoteServiceImpl implements JenkinsRemoteService {
 		case GET_BUILD_EXTRA_INFO:
 			requestPath = "/job/ManagmentJob/xxx/api/json?tree=actions[parameters[name,value]]";
 			break;
+		case CANCEL_EXECUTION:
+			requestPath = "/job/ManagmentJob/xxx/stop";
+			break;
 		default:
 			break;
 		}
 		url = url + requestPath;
 		return url;
 	}
-	
-	private String sendPostRequestToJenkinsRestApi(String url, Map<String, String> params) throws Exception {
+
+	private String sendPostRequestToJenkinsRestApi(String url,
+			Map<String, String> params) throws Exception {
 		String json = null;
 		DefaultHttpClient httpClient = new DefaultHttpClient();
 		HttpPost httpPost = null;
@@ -214,11 +233,13 @@ public class JenkinsRemoteServiceImpl implements JenkinsRemoteService {
 		} catch (Exception e) {
 			throw new Exception("Could not open a connection");
 		}
-		List<NameValuePair> pairs = new ArrayList<NameValuePair>();
-		for (Map.Entry<String, String> entry : params.entrySet()) {
-			pairs.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
+		if (params != null) {
+			List<NameValuePair> pairs = new ArrayList<NameValuePair>();
+			for (Map.Entry<String, String> entry : params.entrySet()) {
+				pairs.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
+			}
+			httpPost.setEntity(new UrlEncodedFormEntity(pairs));
 		}
-		httpPost.setEntity(new UrlEncodedFormEntity(pairs));
 		HttpResponse response = null;
 		try {
 			response = httpClient.execute(httpPost);
@@ -229,7 +250,7 @@ public class JenkinsRemoteServiceImpl implements JenkinsRemoteService {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		
+
 		return json;
 	}
 
@@ -260,7 +281,7 @@ public class JenkinsRemoteServiceImpl implements JenkinsRemoteService {
 	}
 
 	private enum RemoteApiRequest {
-		GET_NODES, EXECUTE_DEFAULT_JOB, EXECUTE_PARAMETERIZED_JOB, GET_JOB_BUILDS_TREE, GET_BUILD_EXTRA_INFO
+		GET_NODES, EXECUTE_DEFAULT_JOB, EXECUTE_PARAMETERIZED_JOB,
+		GET_JOB_BUILDS_TREE, GET_BUILD_EXTRA_INFO, CANCEL_EXECUTION
 	}
-
 }

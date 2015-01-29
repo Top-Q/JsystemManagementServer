@@ -40,9 +40,15 @@ public class JenkinsController {
 		params.put("nodeMark", nodeMark);
 		return jenkinsRemoteService.executeParameterizedJob(params);
 	}
-	
+
+	@RequestMapping(value = "cancelJob", method = RequestMethod.GET)
+	public @ResponseBody String cancelJob(
+			@RequestParam(value = "jobId", required = true) String jobId) {
+				return jenkinsRemoteService.cancelExecution(jobId);
+	}
+
 	@RequestMapping(value = "getExecutionHistory", method = RequestMethod.GET)
-	public @ResponseBody ExecutionData getExecutionHistory() {		
+	public @ResponseBody ExecutionData getExecutionHistory() {
 		return jenkinsRemoteService.getExecutionHistory();
 	}
 

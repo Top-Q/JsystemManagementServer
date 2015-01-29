@@ -10,4 +10,5 @@ public interface JenkinsRemoteService {
 	public String executeDefaultJob();
 	public String executeParameterizedJob(Map<String, String> params);
 	public ExecutionData getExecutionHistory();
+	public String cancelExecution(String buildNumber);
 }
