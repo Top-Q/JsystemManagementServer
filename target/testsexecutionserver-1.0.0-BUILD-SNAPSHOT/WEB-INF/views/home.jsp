@@ -71,7 +71,7 @@
                         <div id="dynamictable" class="panel" style="border-bottom: 2px solid rgba(208, 188, 188, 0.32); padding-bottom: 30px ">                                                                                                                                                                                              
                         </div>
                         <div id="tWrapper" style="padding-top: 40px">
-					<table id="table_id" class="display">
+					<table id="executionTable" class="display">
 				    <thead>
 				        <tr>
 				        	<th>Execution No.</th>
@@ -214,7 +214,7 @@
                             $(document).ready(function() {
                                 populateTreeNew();
                                 populateAgents();
-                                var oTable = $('#table_id').DataTable({
+                                var oTable = $('#executionTable').DataTable({
                                 	"processing": true,
                                     "serverSide": false,
                                     "ajax": "/testsexecutionserver/jenkins/getExecutionHistory",

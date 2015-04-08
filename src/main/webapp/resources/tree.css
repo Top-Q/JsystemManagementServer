@@ -22,6 +22,8 @@ and open the template in the editor.
 
 #tree {
     overflow: auto;
-    min-height: 704px;
-    max-height: 720px
+    min-height: 20px;
+    max-height: 720px;
+    border-bottom: 2px solid rgba(208, 188, 188, 0.32);
+    padding-bottom: 10px
 }
