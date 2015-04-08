@@ -19,7 +19,9 @@ public class ScenarioParser {
 
 		String xmlFilePath = scenarionsDir + File.separator + scenarioName
 				+ ".xml";
-		String propertiesFilePath = scenarionsDir + File.separator
+		/*String propertiesFilePath = scenarionsDir + File.separator
+				+ scenarioName + ".properties";*/
+		String propertiesFilePath = scenarionsDir + "/"
 				+ scenarioName + ".properties";
 
 		Scenario scenario = new Scenario(new File(scenarionsDir), scenarioName);

@@ -27,6 +27,9 @@ public class SystemConfig {
 		else if (osName.startsWith("Linux")){
 			configPropertiesFileLocation = "/home/nimrod/ExecutionManager/scenarioParseInput.properties";
 		}
+		else if (osName.startsWith("Mac OS")) {
+			configPropertiesFileLocation = "/Users/nimrodti/Documents/ExecutionManager/systemConfig.properties";
+		}
 		
 		Properties properties = new Properties();
 		FileInputStream input = new FileInputStream(configPropertiesFileLocation);
