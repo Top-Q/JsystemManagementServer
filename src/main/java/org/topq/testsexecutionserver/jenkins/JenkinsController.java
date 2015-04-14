@@ -33,10 +33,12 @@ public class JenkinsController {
 	public @ResponseBody String executeParameterizedJob(
 			@RequestParam(value = "agent", required = true) String agent,
 			@RequestParam(value = "scenario", required = true) String scenario,
+			@RequestParam(value = "sut", required = true) String sut,
 			@RequestParam(value = "nodeMark", required = true) String nodeMark) {
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("node", agent);
 		params.put("scenario", scenario);
+		params.put("sut", sut);
 		params.put("nodeMark", nodeMark);
 		return jenkinsRemoteService.executeParameterizedJob(params);
 	}

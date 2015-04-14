@@ -44,8 +44,15 @@ h2 {
 	padding: 0;
 }
 
+#scenariosList {
+	list-style-type: none;
+	list-style-image: url('./resources/imgs/tsuiteok.gif');
+	margin-left: 30px;
+	padding: 0;
+}
+
 li {
-	font: 200 20px/1.5 Helvetica, Verdana, sans-serif;
+	font: 200 17px/1.5 Helvetica, Verdana, sans-serif;
 	border-bottom: 1px solid #ccc;
 }
 
@@ -66,9 +73,15 @@ li a {
 }
 
 li a:hover {
-	font-size: 30px;
+	font-size: 20px;
 	background: #f6f6f6;
+	cursor: pointer
 }
+
+#dynamictable:hover {
+	cursor: pointer
+}
+
 </style>
 </head>
 
@@ -85,13 +98,6 @@ li a:hover {
 				</button>
 				<a class="navbar-brand">Execution Manager</a>
 			</div>
-			<!-- <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="index.html">Dashboard</a></li>
-                        <li><a href="#">Execution Tree</a></li>
-                        <li><a href="table.html">Execution Table</a></li>
-                    </ul>
-                </div> -->
 		</div>
 	</div>
 
@@ -110,28 +116,20 @@ li a:hover {
 				<div class="input-group" style="padding: 10px">
 					<input id="scenarioInput" type="text" class="form-control"
 						placeholder="Enter Scenario..." style="width: 50%"> <input
-						id="machineInput" type="text" class="form-control"
-						placeholder="Enter Machine..." style="width: 50%">
+						id="sutInput" type="text" class="form-control"
+						placeholder="Enter Sut..." style="width: 50%">
 				</div>
-				<div id="tree"></div>
+				<!-- <div id="tree"></div> -->
+				<div>
+					<h2>Scenarios</h2>
+					<ul id="scenariosList">
+					</ul>
+				</div>
 				<div>
 					<h2>Suts</h2>
 					<ul id="sutList">
-						<li><a href="#">default</a></li>
-						<li><a href="#">web_reg_auto1</a></li>
-						<li><a href="#">web_reg_auto2</a></li>
-						<li><a href="#">backend_sanity_auto1</a></li>
-						<li><a href="#">backend_sanity_auto2</a></li>
 					</ul>
 				</div>
-				<!-- <ul
-					style="padding-top: 10px; list-style-image: url('./resources/imgs/tsuiteok.gif'); margin-left: 10px">
-					<li>default</li>
-					<li>chrome</li>
-					<li>firefox</li>
-					<li>safari</li>
-					<li>internet explorer</li>
-				</ul> -->
 			</div>
 			<div class="col-md-9 hidden-sm hidden-xs panel panel-default">
 				<div class="panel-heading">Registered Agents</div>
@@ -143,8 +141,9 @@ li a:hover {
 						<thead>
 							<tr>
 								<th>Execution No.</th>
-								<th>Scenario</th>
+								<th>Sut</th>
 								<th>Agent</th>
+								<th>Scenario</th>
 								<th>Time Stamp</th>
 								<th>Status</th>
 							</tr>
@@ -168,6 +167,7 @@ li a:hover {
 	<script
 		src="<c:url value="/resources/DataTables-1.10.4/media/js/jquery.dataTables.js" />"></script>
 	<script type="text/javascript">
+		var selectedAgent = "";
 		function populateTreeNew() {
 			//$.jstree.defaults.search.show_only_matches = true;
 			treeController($('#tree'));
@@ -211,6 +211,50 @@ li a:hover {
 			    });
 			}); */
 
+		}
+		
+		function setScenario(elem) {
+			document.getElementById('scenarioInput').value = elem.innerText;
+		}
+		
+		function setSut(elem) {
+			document.getElementById('sutInput').value = elem.innerText;
+		}
+		
+		function populateScenarios() {
+			var obj;
+			$.ajax({
+				url : "/testsexecutionserver/scenarioComposer/getScenarios",
+				dataType : "json",
+				success : function(data) {
+					var li;
+					for (i = 0; i < data.length; i++) {
+						li = "<li><a onclick=setScenario(this)>" + data[i] + "</a></li>";
+						$('#scenariosList').append(li);
+					}
+				},
+				fail : function(result) {
+					alert('Failed to get scenario model!!')
+				}
+			});
+		}
+		
+		function populateSuts() {
+			var obj;
+			$.ajax({
+				url : "/testsexecutionserver/scenarioComposer/getSuts",
+				dataType : "json",
+				success : function(data) {
+					var li;
+					for (i = 0; i < data.length; i++) {
+						li = "<li><a onclick=setSut(this)>" + data[i] + "</a></li>";
+						$('#sutList').append(li);
+					}
+				},
+				fail : function(result) {
+					alert('Failed to get scenario model!!')
+				}
+			});
 		}
 
 		function populateAgents() {
@@ -259,7 +303,7 @@ li a:hover {
 		}
 
 		function clickOnAgent(elem) {
-			document.getElementById('machineInput').value = elem.innerText;
+			selectedAgent = elem.innerText;
 		}
 
 		function executeJob() {
@@ -277,9 +321,10 @@ li a:hover {
 
 		function executeParameterizedJob() {
 			var reqParams = {};
-			reqParams.agent = document.getElementById('machineInput').value;
+			reqParams.agent = selectedAgent;
 			reqParams.scenario = document.getElementById('scenarioInput').value;
-			reqParams.nodeMark = document.getElementById('machineInput').value;
+			reqParams.sut = document.getElementById('sutInput').value + ".xml";
+			reqParams.nodeMark = selectedAgent;
 			console.log(reqParams);
 			$.get("/testsexecutionserver/jenkins/executeParameterizedJob",
 					reqParams, function(data) {
@@ -300,7 +345,9 @@ li a:hover {
 		$(document)
 				.ready(
 						function() {
-							populateTreeNew();
+							//populateTreeNew();
+							populateScenarios();
+							populateSuts();
 							populateAgents();
 							var oTable = $('#executionTable')
 									.DataTable(
@@ -313,6 +360,9 @@ li a:hover {
 												}, {
 													"data" : "scenario"
 												}, {
+													"data" : "sut"
+												}
+												, {
 													"data" : "agent"
 												}, {
 													"data" : "timeStamp"

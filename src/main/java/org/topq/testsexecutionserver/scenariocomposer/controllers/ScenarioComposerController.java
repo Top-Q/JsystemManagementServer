@@ -1,7 +1,10 @@
 package org.topq.testsexecutionserver.scenariocomposer.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,4 +23,14 @@ public class ScenarioComposerController {
 		ScenarioNode scenarioModel = fsScenarioScanner.getScenarioModel();
 		return scenarioModel;
 	}	
+	
+	@RequestMapping(value = "/getScenarios", method = RequestMethod.GET)
+	public @ResponseBody List<String> getScenarios() {
+		return fsScenarioScanner.getScenarios();
+	}
+	
+	@RequestMapping(value = "/getSuts", method = RequestMethod.GET)
+	public @ResponseBody List<String> getSuts() {
+		return fsScenarioScanner.getSuts();
+	}
 }

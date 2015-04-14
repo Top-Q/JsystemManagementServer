@@ -170,9 +170,12 @@ public class JenkinsRemoteServiceImpl implements JenkinsRemoteService {
 					.getParameters().get(1);
 			Parameter nodeMarkParam = buildExtraInfo.getActions().get(0)
 					.getParameters().get(2);
+			Parameter sutParam = buildExtraInfo.getActions().get(0)
+					.getParameters().get(3);
 
 			executionRow.setAgent(nodeMarkParam.getValue());
 			executionRow.setScenario(scenarioParam.getValue());
+			executionRow.setSut(sutParam.getValue());
 		} catch (Exception e) {
 			executionRow.setAgent("N/A");
 			executionRow.setScenario("N/A");
@@ -191,8 +194,14 @@ public class JenkinsRemoteServiceImpl implements JenkinsRemoteService {
 
 	private String updateRequestUrlAccordingToApi(
 			RemoteApiRequest remoteApiRequest) {
-		String url = "http://" + systemConfig.getJenkinsIp() + ":"
-				+ systemConfig.getJenkinsPort();
+		String url = null;
+		if (systemConfig.getJenkinsPort().equals("8080")) {
+			url = "http://" + systemConfig.getJenkinsIp() + ":"
+					+ systemConfig.getJenkinsPort();
+		}
+		else {
+			url = "https://" + systemConfig.getJenkinsIp();
+		}
 		String requestPath = null;
 
 		switch (remoteApiRequest) {
@@ -200,21 +209,24 @@ public class JenkinsRemoteServiceImpl implements JenkinsRemoteService {
 			requestPath = "/computer/api/json";
 			break;
 		case EXECUTE_DEFAULT_JOB:
-			/* requestPath = "/job/SimpleTestsExecution/build"; */
-			requestPath = "/job/ManagmentJob/build";
+			/*requestPath = "/job/ManagmentJob/build";*/
+			requestPath = "/job/SmokeTests/build";
 			break;
 		case EXECUTE_PARAMETERIZED_JOB:
-			/* requestPath = "/job/SimpleTestsExecution/buildWithParameters"; */
-			requestPath = "/job/ManagmentJob/buildWithParameters";
+			//requestPath = "/job/ManagmentJob/buildWithParameters";
+			requestPath = "/job/SmokeTests/buildWithParameters";
 			break;
 		case GET_JOB_BUILDS_TREE:
-			requestPath = "/job/ManagmentJob/api/json?tree=builds[number,status,id,result,url]";
+			//requestPath = "/job/ManagmentJob/api/json?tree=builds[number,status,id,result,url]";
+			requestPath = "/job/SmokeTests/api/json?tree=builds[number,status,id,result,url]";
 			break;
 		case GET_BUILD_EXTRA_INFO:
-			requestPath = "/job/ManagmentJob/xxx/api/json?tree=actions[parameters[name,value]]";
+			//requestPath = "/job/ManagmentJob/xxx/api/json?tree=actions[parameters[name,value]]";
+			requestPath = "/job/SmokeTests/xxx/api/json?tree=actions[parameters[name,value]]";
 			break;
 		case CANCEL_EXECUTION:
-			requestPath = "/job/ManagmentJob/xxx/stop";
+			//requestPath = "/job/ManagmentJob/xxx/stop";
+			requestPath = "/job/SmokeTests/xxx/stop";
 			break;
 		default:
 			break;

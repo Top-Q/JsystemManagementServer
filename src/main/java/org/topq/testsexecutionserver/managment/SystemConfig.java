@@ -16,30 +16,33 @@ public class SystemConfig {
 	private String maxExecutionHistoryEntries;
 	private String scenariosDir;
 	private String scenarioName;
-	
+	private String sutsDir;
+
 	@PostConstruct
 	public void init() throws Exception {
 		String osName = System.getProperty("os.name");
 		String configPropertiesFileLocation = null;
 		if (osName.startsWith("Win")) {
 			configPropertiesFileLocation = "C:\\ExecutionManager\\systemConfig.properties";
-		}
-		else if (osName.startsWith("Linux")){
+		} else if (osName.startsWith("Linux")) {
 			configPropertiesFileLocation = "/home/nimrod/ExecutionManager/scenarioParseInput.properties";
-		}
-		else if (osName.startsWith("Mac OS")) {
+		} else if (osName.startsWith("Mac OS")) {
 			configPropertiesFileLocation = "/Users/nimrodti/Documents/ExecutionManager/systemConfig.properties";
 		}
-		
+
 		Properties properties = new Properties();
-		FileInputStream input = new FileInputStream(configPropertiesFileLocation);
-		InputStreamReader inputStreamReader = new InputStreamReader(input, "UTF-8");
+		FileInputStream input = new FileInputStream(
+				configPropertiesFileLocation);
+		InputStreamReader inputStreamReader = new InputStreamReader(input,
+				"UTF-8");
 		properties.load(inputStreamReader);
 		jenkinsIp = properties.getProperty("jenkinsMasterIp");
 		jenkinsPort = properties.getProperty("jenkinsMasterPort");
-		maxExecutionHistoryEntries = properties.getProperty("maxExecutionHistoryEntries");
+		maxExecutionHistoryEntries = properties
+				.getProperty("maxExecutionHistoryEntries");
 		scenariosDir = properties.getProperty("scenarioFolder");
 		scenarioName = properties.getProperty("rootScenarioName");
+		sutsDir = properties.getProperty("sutsDir");
 	}
 
 	public String getJenkinsIp() {
@@ -80,6 +83,14 @@ public class SystemConfig {
 
 	public void setScenarioName(String scenarioName) {
 		this.scenarioName = scenarioName;
+	}
+
+	public String getSutsDir() {
+		return sutsDir;
+	}
+
+	public void setSutsDir(String sutsDir) {
+		this.sutsDir = sutsDir;
 	}
 
 }

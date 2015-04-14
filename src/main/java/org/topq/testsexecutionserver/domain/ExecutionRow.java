@@ -7,6 +7,7 @@ public class ExecutionRow {
 	private String agent;
 	private String timeStamp;
 	private String status;
+	private String sut;
 
 	public int getExecutionNumber() {
 		return executionNumber;
@@ -48,5 +49,12 @@ public class ExecutionRow {
 		this.status = status;
 	}
 
-}
+	public String getSut() {
+		return sut;
+	}
 
+	public void setSut(String sut) {
+		this.sut = sut;
+	}
+
+}
