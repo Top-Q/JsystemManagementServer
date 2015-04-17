@@ -17,6 +17,7 @@ public class SystemConfig {
 	private String scenariosDir;
 	private String scenarioName;
 	private String sutsDir;
+	private String jenkinsMainAutomationJob;
 
 	@PostConstruct
 	public void init() throws Exception {
@@ -43,6 +44,7 @@ public class SystemConfig {
 		scenariosDir = properties.getProperty("scenarioFolder");
 		scenarioName = properties.getProperty("rootScenarioName");
 		sutsDir = properties.getProperty("sutsDir");
+		jenkinsMainAutomationJob = properties.getProperty("jenkinsMainAutomationJob");
 	}
 
 	public String getJenkinsIp() {
@@ -91,6 +93,14 @@ public class SystemConfig {
 
 	public void setSutsDir(String sutsDir) {
 		this.sutsDir = sutsDir;
+	}
+
+	public String getJenkinsMainAutomationJob() {
+		return jenkinsMainAutomationJob;
+	}
+
+	public void setJenkinsMainAutomationJob(String jenkinsMainAutomationJob) {
+		this.jenkinsMainAutomationJob = jenkinsMainAutomationJob;
 	}
 
 }

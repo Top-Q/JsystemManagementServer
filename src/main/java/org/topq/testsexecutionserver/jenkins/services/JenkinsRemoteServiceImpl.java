@@ -202,6 +202,7 @@ public class JenkinsRemoteServiceImpl implements JenkinsRemoteService {
 		else {
 			url = "https://" + systemConfig.getJenkinsIp();
 		}
+		String jenkinsMainAutomationJob = systemConfig.getJenkinsMainAutomationJob();
 		String requestPath = null;
 
 		switch (remoteApiRequest) {
@@ -210,23 +211,24 @@ public class JenkinsRemoteServiceImpl implements JenkinsRemoteService {
 			break;
 		case EXECUTE_DEFAULT_JOB:
 			/*requestPath = "/job/ManagmentJob/build";*/
-			requestPath = "/job/SmokeTests/build";
+			/*requestPath = "/job/SmokeTests/build";*/
+			requestPath = "/job/" + jenkinsMainAutomationJob + "/build";
 			break;
 		case EXECUTE_PARAMETERIZED_JOB:
 			//requestPath = "/job/ManagmentJob/buildWithParameters";
-			requestPath = "/job/SmokeTests/buildWithParameters";
+			requestPath = "/job/" + jenkinsMainAutomationJob + "/buildWithParameters";
 			break;
 		case GET_JOB_BUILDS_TREE:
 			//requestPath = "/job/ManagmentJob/api/json?tree=builds[number,status,id,result,url]";
-			requestPath = "/job/SmokeTests/api/json?tree=builds[number,status,id,result,url]";
+			requestPath = "/job/" + jenkinsMainAutomationJob + "/api/json?tree=builds[number,status,id,result,url]";
 			break;
 		case GET_BUILD_EXTRA_INFO:
 			//requestPath = "/job/ManagmentJob/xxx/api/json?tree=actions[parameters[name,value]]";
-			requestPath = "/job/SmokeTests/xxx/api/json?tree=actions[parameters[name,value]]";
+			requestPath = "/job/" + jenkinsMainAutomationJob + "/xxx/api/json?tree=actions[parameters[name,value]]";
 			break;
 		case CANCEL_EXECUTION:
 			//requestPath = "/job/ManagmentJob/xxx/stop";
-			requestPath = "/job/SmokeTests/xxx/stop";
+			requestPath = "/job/" + jenkinsMainAutomationJob + "/xxx/stop";
 			break;
 		default:
 			break;
