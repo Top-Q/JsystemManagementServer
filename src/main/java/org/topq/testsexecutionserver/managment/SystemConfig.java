@@ -26,7 +26,7 @@ public class SystemConfig {
 		if (osName.startsWith("Win")) {
 			configPropertiesFileLocation = "C:\\ExecutionManager\\systemConfig.properties";
 		} else if (osName.startsWith("Linux")) {
-			configPropertiesFileLocation = "/home/nimrod/ExecutionManager/scenarioParseInput.properties";
+			configPropertiesFileLocation = "/etc/tomcat/ExecutionManagementConfiguration/systemConfig.properties";
 		} else if (osName.startsWith("Mac OS")) {
 			configPropertiesFileLocation = "/Users/nimrodti/Documents/ExecutionManager/systemConfig.properties";
 		}
