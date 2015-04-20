@@ -105,12 +105,14 @@ li a:hover {
 		<div class="row">
 			<div id="leftPane" class="col-md-3 ">
 				<div class="btn-group btn-group-sm" style="padding: 10px;">
-					<button type="button"
+					<!-- <button type="button"
 						onclick="javascript:$('#tree').jstree('open_all')">Expand
 						all</button>
 					<button type="button"
 						onclick="javascript:$('#tree').jstree('close_all')">Collapse
-						all</button>
+						all</button> -->
+						<button type="button">Load Config</button>
+						<button type="button">Create Config</button>
 					<button type="button" onclick="executeParameterizedJob()">Execute</button>
 				</div>
 				<div class="input-group" style="padding: 10px">
@@ -141,9 +143,9 @@ li a:hover {
 						<thead>
 							<tr>
 								<th>Execution No.</th>
+								<th>Scenario</th>
 								<th>Sut</th>
 								<th>Agent</th>
-								<th>Scenario</th>
 								<th>Time Stamp</th>
 								<th>Status</th>
 							</tr>
