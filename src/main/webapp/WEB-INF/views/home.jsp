@@ -27,6 +27,7 @@
 	rel="stylesheet">
 
 <style type="text/css">
+
 .agent {
 	opacity: 0.4;
 }
@@ -113,8 +114,9 @@ li a:hover {
 						all</button> -->
 						<button type="button">Load Config</button>
 						<button type="button">Create Config</button>
-					<button type="button" onclick="executeParameterizedJob()">Execute</button>
+					<button id="executeBtn" type="button" onclick="executeParameterizedJob()">Execute</button>
 				</div>
+				
 				<div class="input-group" style="padding: 10px">
 					<input id="scenarioInput" type="text" class="form-control"
 						placeholder="Enter Scenario..." style="width: 50%"> <input
@@ -330,7 +332,7 @@ li a:hover {
 			console.log(reqParams);
 			$.get("/testsexecutionserver/jenkins/executeParameterizedJob",
 					reqParams, function(data) {
-						console.log(data);
+						/* alert('Successfuly started execution' + data) */
 					});
 		}
 
