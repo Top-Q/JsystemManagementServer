@@ -1,10 +1,14 @@
 package org.topq.testsexecutionserver.jenkins.services;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
+import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -32,6 +36,9 @@ public class JenkinsRemoteServiceImpl implements JenkinsRemoteService {
 
 	@Autowired
 	private SystemConfig systemConfig;
+	
+	private String cred;
+	private byte[] encodedCred;
 
 	@Override
 	public String getAvailableAgents() {
@@ -247,6 +254,9 @@ public class JenkinsRemoteServiceImpl implements JenkinsRemoteService {
 		} catch (Exception e) {
 			throw new Exception("Could not open a connection");
 		}
+		if (systemConfig.getUseAuthentication().equals("true")) {
+			httpPost.setHeader("Authorization", "Basic " + new String(encodedCred));
+		}
 		if (params != null) {
 			List<NameValuePair> pairs = new ArrayList<NameValuePair>();
 			for (Map.Entry<String, String> entry : params.entrySet()) {
@@ -280,6 +290,9 @@ public class JenkinsRemoteServiceImpl implements JenkinsRemoteService {
 		} catch (Exception e) {
 			throw new Exception("Could not open a connection");
 		}
+		if (systemConfig.getUseAuthentication().equals("true")) {
+			httpget.setHeader("Authorization", "Basic " + new String(encodedCred));
+		}
 		HttpResponse response = null;
 		try {
 			response = httpClient.execute(httpget);
@@ -292,6 +305,14 @@ public class JenkinsRemoteServiceImpl implements JenkinsRemoteService {
 		}
 
 		return json;
+	}
+	
+	@PostConstruct
+	public void init() {
+		if (systemConfig.getUseAuthentication().equals("true")) {
+			cred = systemConfig.getUserId() + ":" + systemConfig.getApiToken();
+			encodedCred = Base64.encodeBase64(cred.getBytes(Charset.forName("US-ASCII")));
+		}
 	}
 
 	private enum RemoteApiRequest {

@@ -18,6 +18,9 @@ public class SystemConfig {
 	private String scenarioName;
 	private String sutsDir;
 	private String jenkinsMainAutomationJob;
+	private String userId;
+	private String apiToken;
+	private String useAuthentication;
 
 	@PostConstruct
 	public void init() throws Exception {
@@ -26,7 +29,10 @@ public class SystemConfig {
 		if (osName.startsWith("Win")) {
 			configPropertiesFileLocation = "C:\\ExecutionManager\\systemConfig.properties";
 		} else if (osName.startsWith("Linux")) {
-			/*configPropertiesFileLocation = "/home/nimrod/ExecutionManager/systemConfig.properties";*/
+			/*
+			 * configPropertiesFileLocation =
+			 * "/home/nimrod/ExecutionManager/systemConfig.properties";
+			 */
 			configPropertiesFileLocation = "/etc/tomcat/ExecutionManagementConfiguration/systemConfig.properties";
 		} else if (osName.startsWith("Mac OS")) {
 			configPropertiesFileLocation = "/Users/nimrodti/Documents/ExecutionManager/systemConfig.properties";
@@ -45,7 +51,11 @@ public class SystemConfig {
 		scenariosDir = properties.getProperty("scenarioFolder");
 		scenarioName = properties.getProperty("rootScenarioName");
 		sutsDir = properties.getProperty("sutsDir");
-		jenkinsMainAutomationJob = properties.getProperty("jenkinsMainAutomationJob");
+		jenkinsMainAutomationJob = properties
+				.getProperty("jenkinsMainAutomationJob");
+		useAuthentication = properties.getProperty("useAuthentication");
+		userId = properties.getProperty("userId");
+		apiToken = properties.getProperty("apiToken");
 	}
 
 	public String getJenkinsIp() {
@@ -102,6 +112,30 @@ public class SystemConfig {
 
 	public void setJenkinsMainAutomationJob(String jenkinsMainAutomationJob) {
 		this.jenkinsMainAutomationJob = jenkinsMainAutomationJob;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getApiToken() {
+		return apiToken;
+	}
+
+	public void setApiToken(String apiToken) {
+		this.apiToken = apiToken;
+	}
+
+	public String getUseAuthentication() {
+		return useAuthentication;
+	}
+
+	public void setUseAuthentication(String useAuthentication) {
+		this.useAuthentication = useAuthentication;
 	}
 
 }
